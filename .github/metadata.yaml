@@ -8,3 +8,5 @@ topics:
   - http
   - linking
 homepage: "https://swift-institute.org"
+readme:
+  family: F
