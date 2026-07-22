@@ -14,10 +14,16 @@ let package = Package(
         .library(name: "RFC 8288", targets: ["RFC 8288"])
     ],
     dependencies: [
-        .package(path: "../../swift-primitives/swift-byte-primitives"),
-        .package(path: "../../swift-primitives/swift-byte-parser-primitives"),
-        .package(path: "../swift-rfc-3986"),
-        .package(path: "../swift-rfc-9110"),
+        .package(
+            url: "https://github.com/swift-primitives/swift-byte-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-byte-parser-primitives.git",
+            branch: "main"
+        ),
+        .package(url: "https://github.com/swift-ietf/swift-rfc-3986.git", branch: "main"),
+        .package(url: "https://github.com/swift-ietf/swift-rfc-9110.git", branch: "main"),
     ],
     targets: [
         .target(
