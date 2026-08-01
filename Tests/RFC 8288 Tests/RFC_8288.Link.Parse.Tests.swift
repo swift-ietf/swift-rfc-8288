@@ -1,5 +1,5 @@
-import RFC_8288
 import RFC_3986
+import RFC_8288
 import RFC_9110
 import Testing
 
@@ -32,11 +32,13 @@ extension `RFC 8288 Link Parse Tests`.Unit {
 
         let links = try RFC_8288.Link.Parse()(headers)
 
-        #expect(links.map(\.target.value) == [
-            "https://example.test/1",
-            "https://example.test/2",
-            "https://example.test/3",
-        ])
+        #expect(
+            links.map(\.target.value) == [
+                "https://example.test/1",
+                "https://example.test/2",
+                "https://example.test/3",
+            ]
+        )
         #expect(links[1].relations.contains(.next))
     }
 
