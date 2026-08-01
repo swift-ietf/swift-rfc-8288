@@ -6,15 +6,21 @@ extension RFC_8288.Link.Parameter {
         init(validated rawValue: String) {
             self.rawValue = rawValue
         }
-
-        public static func == (lhs: Self, rhs: Self) -> Bool {
-            lhs.rawValue.lowercased() == rhs.rawValue.lowercased()
-        }
-
-        public func hash(into hasher: inout Hasher) {
-            hasher.combine(rawValue.lowercased())
-        }
-
-        public static let relation = Self(validated: "rel")
     }
+}
+
+extension RFC_8288.Link.Parameter.Name {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        // swift-linter:disable:next raw value access
+        // REASON: same-package implementation — the type's own Equatable witness projecting its own `rawValue`.
+        // swift-linter:disable:next chained rawvalue access
+        // REASON: same-package implementation — the type's own Equatable witness projecting its own `rawValue`.
+        lhs.rawValue.lowercased() == rhs.rawValue.lowercased()
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(rawValue.lowercased())
+    }
+
+    public static let relation = Self(validated: "rel")
 }

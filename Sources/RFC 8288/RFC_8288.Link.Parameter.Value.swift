@@ -9,9 +9,11 @@ extension RFC_8288.Link.Parameter {
         init(_ bytes: [Byte]) {
             self.bytes = bytes
         }
+    }
+}
 
-        public var string: String {
-            String(decoding: bytes, as: UTF8.self)
-        }
+extension RFC_8288.Link.Parameter.Value {
+    public var string: String {
+        String(decoding: bytes, as: UTF8.self)
     }
 }
