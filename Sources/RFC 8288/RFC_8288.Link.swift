@@ -6,15 +6,5 @@ extension RFC_8288 {
         public let target: RFC_3986.URI
         public let parameters: [Parameter]
         public let relations: [Relation]
-
-        init(
-            target: RFC_3986.URI,
-            parameters: [Parameter],
-            relations: [Relation]
-        ) {
-            self.target = target
-            self.parameters = parameters
-            self.relations = relations
-        }
     }
 }
