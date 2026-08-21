@@ -4,7 +4,7 @@ import RFC_3986
 public import RFC_9110
 
 extension RFC_8288.Link {
-    /// Parses the HTTP `Link` field representation defined by RFC 8288 Section 3.
+
     public struct Parse: Sendable {
         public init() {}
     }
@@ -30,8 +30,7 @@ extension RFC_8288.Link.Parse {
     public func callAsFunction(
         _ value: RFC_9110.Header.Field.Value
     ) throws(Error) -> [RFC_8288.Link] {
-        // swift-linter:disable:next raw value access
-        // REASON: no typed byte accessor exposed by `RFC_9110.Header.Field.Value`; `.rawValue` is its only projection.
+
         var input = Byte.Input(utf8: value.rawValue)
         var links: [RFC_8288.Link] = []
 

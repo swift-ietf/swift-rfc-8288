@@ -51,8 +51,7 @@ extension `RFC 8288 Link Parse Tests`.Unit {
         #expect(links[0].target.value == "/items?page=2")
         #expect(links[0].relations.map(\.rawValue) == ["next", "prev"])
         #expect(links[0].parameters[1].value?.string == #"a,b;c\d"#)
-        // swift-linter:disable:next raw value access
-        // REASON: test asserts the RawRepresentable `rawValue` contract directly.
+
         #expect(links[0].parameters[2].name.rawValue == "x-extension")
         #expect(links[0].parameters[2].value?.string == "opaque")
         #expect(links[0].parameters[3].value == nil)
