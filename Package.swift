@@ -15,11 +15,11 @@ let package = Package(
     ],
     dependencies: [
         .package(
-            url: "https://github.com/swift-primitives/swift-byte-primitives.git",
+            url: "https://github.com/swift-molecules/swift-byte.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-byte-parser-primitives.git",
+            url: "https://github.com/swift-molecules/swift-byte-parser.git",
             branch: "main"
         ),
         .package(url: "https://github.com/swift-ietf/swift-rfc-3986.git", branch: "main"),
@@ -29,12 +29,12 @@ let package = Package(
         .target(
             name: "RFC 8288",
             dependencies: [
-                .product(name: "Byte Primitives", package: "swift-byte-primitives"),
+                .product(name: "Byte", package: "swift-byte"),
                 .product(
-                    name: "Byte Primitives Standard Library Integration",
-                    package: "swift-byte-primitives"
+                    name: "Byte Standard Library Integration",
+                    package: "swift-byte"
                 ),
-                .product(name: "Byte Parser Primitives", package: "swift-byte-parser-primitives"),
+                .product(name: "Byte Parser", package: "swift-byte-parser"),
                 .product(name: "RFC 3986", package: "swift-rfc-3986"),
                 .product(name: "RFC 9110", package: "swift-rfc-9110"),
             ]

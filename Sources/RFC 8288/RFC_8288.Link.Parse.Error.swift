@@ -1,4 +1,4 @@
-public import Byte_Primitives
+public import Byte
 public import RFC_3986
 
 extension RFC_8288.Link.Parse {

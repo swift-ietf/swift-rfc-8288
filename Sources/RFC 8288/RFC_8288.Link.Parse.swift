@@ -1,5 +1,5 @@
-import Byte_Parser_Primitives
-import Byte_Primitives_Standard_Library_Integration
+import Byte_Parser
+import Byte_Standard_Library_Integration
 import RFC_3986
 public import RFC_9110
 
