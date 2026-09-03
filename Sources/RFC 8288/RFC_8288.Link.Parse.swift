@@ -31,19 +31,19 @@ extension RFC_8288.Link.Parse {
         _ value: RFC_9110.Header.Field.Value
     ) throws(Error) -> [RFC_8288.Link] {
 
-        var input = Byte.Input(utf8: value.rawValue)
+        var input = [Byte](utf8: value.rawValue)[...]
         var links: [RFC_8288.Link] = []
 
         while true {
-            RFC_9110.Parse.OWS<Byte.Input>().parse(&input)
+            RFC_9110.Parse.OWS<ArraySlice<Byte>>().parse(&input)
             while input.first == 0x2C {
                 input.removeFirst()
-                RFC_9110.Parse.OWS<Byte.Input>().parse(&input)
+                RFC_9110.Parse.OWS<ArraySlice<Byte>>().parse(&input)
             }
             guard !input.isEmpty else { return links }
 
             links.append(try link(&input))
-            RFC_9110.Parse.OWS<Byte.Input>().parse(&input)
+            RFC_9110.Parse.OWS<ArraySlice<Byte>>().parse(&input)
 
             guard !input.isEmpty else { return links }
             guard input.first == 0x2C else {
@@ -54,7 +54,7 @@ extension RFC_8288.Link.Parse {
     }
 
     private func link(
-        _ input: inout Byte.Input
+        _ input: inout ArraySlice<Byte>
     ) throws(Error) -> RFC_8288.Link {
         guard input.first == 0x3C else { throw .expectedTarget }
         input.removeFirst()
@@ -76,10 +76,10 @@ extension RFC_8288.Link.Parse {
 
         var parameters: [RFC_8288.Link.Parameter] = []
         while true {
-            RFC_9110.Parse.OWS<Byte.Input>().parse(&input)
+            RFC_9110.Parse.OWS<ArraySlice<Byte>>().parse(&input)
             guard input.first == 0x3B else { break }
             input.removeFirst()
-            RFC_9110.Parse.OWS<Byte.Input>().parse(&input)
+            RFC_9110.Parse.OWS<ArraySlice<Byte>>().parse(&input)
             parameters.append(try parameter(&input))
         }
 
@@ -91,11 +91,11 @@ extension RFC_8288.Link.Parse {
     }
 
     private func parameter(
-        _ input: inout Byte.Input
+        _ input: inout ArraySlice<Byte>
     ) throws(Error) -> RFC_8288.Link.Parameter {
-        let nameBytes: Byte.Input
-        do throws(RFC_9110.Parse.Token<Byte.Input>.Error) {
-            nameBytes = try RFC_9110.Parse.Token<Byte.Input>().parse(&input)
+        let nameBytes: ArraySlice<Byte>
+        do throws(RFC_9110.Parse.Token<ArraySlice<Byte>>.Error) {
+            nameBytes = try RFC_9110.Parse.Token<ArraySlice<Byte>>().parse(&input)
         } catch {
             throw .invalidParameterName
         }
@@ -103,24 +103,24 @@ extension RFC_8288.Link.Parse {
             validated: String(decoding: nameBytes, as: UTF8.self)
         )
 
-        RFC_9110.Parse.OWS<Byte.Input>().parse(&input)
+        RFC_9110.Parse.OWS<ArraySlice<Byte>>().parse(&input)
         guard input.first == 0x3D else {
             return .init(name: name, value: nil)
         }
         input.removeFirst()
-        RFC_9110.Parse.OWS<Byte.Input>().parse(&input)
+        RFC_9110.Parse.OWS<ArraySlice<Byte>>().parse(&input)
 
         let value: [Byte]
         if input.first == 0x22 {
-            do throws(RFC_9110.Parse.QuotedString<Byte.Input>.Error) {
-                value = try RFC_9110.Parse.QuotedString<Byte.Input>().parse(&input)
+            do throws(RFC_9110.Parse.QuotedString<ArraySlice<Byte>>.Error) {
+                value = try RFC_9110.Parse.QuotedString<ArraySlice<Byte>>().parse(&input)
             } catch {
                 throw .invalidQuotedValue
             }
         } else {
-            let token: Byte.Input
-            do throws(RFC_9110.Parse.Token<Byte.Input>.Error) {
-                token = try RFC_9110.Parse.Token<Byte.Input>().parse(&input)
+            let token: ArraySlice<Byte>
+            do throws(RFC_9110.Parse.Token<ArraySlice<Byte>>.Error) {
+                token = try RFC_9110.Parse.Token<ArraySlice<Byte>>().parse(&input)
             } catch {
                 throw .invalidParameterValue
             }

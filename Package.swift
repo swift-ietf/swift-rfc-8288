@@ -14,6 +14,8 @@ let package = Package(
         .library(name: "RFC 8288", targets: ["RFC 8288"])
     ],
     dependencies: [
+        .package(url: "https://github.com/swift-atoms/swift-byte.git", branch: "main"),
+        .package(url: "https://github.com/swift-atoms/swift-cursor.git", branch: "main"),
         .package(
             url: "https://github.com/swift-molecules/swift-byte.git",
             branch: "main"
