@@ -5,12 +5,6 @@ import Testing
 
 @Suite
 struct `RFC 8288 Link Parse Tests` {
-    @Suite struct Unit {}
-    @Suite struct `Edge Case` {}
-    @Suite struct Integration {}
-}
-
-extension `RFC 8288 Link Parse Tests`.Unit {
     @Test
     func `Single next link`() throws {
         let links = try parse("<https://api.example.test/items?page=2>; rel=next")
@@ -22,7 +16,7 @@ extension `RFC 8288 Link Parse Tests`.Unit {
 
     @Test
     func `Multiple values and field instances preserve order`() throws {
-        let headers = RFC_9110.Headers([
+        let headers = RFC_9110.Message.Headers([
             try .init(
                 name: "Link",
                 value: "<https://example.test/1>; rel=first, <https://example.test/2>; rel=next"
@@ -50,10 +44,10 @@ extension `RFC 8288 Link Parse Tests`.Unit {
 
         #expect(links[0].target.value == "/items?page=2")
         #expect(links[0].relations.map(\.rawValue) == ["next", "prev"])
-        #expect(links[0].parameters[1].value?.string == #"a,b;c\d"#)
+        #expect(links[0].parameters[1].value?.rawValue == #"a,b;c\d"#)
 
         #expect(links[0].parameters[2].name.rawValue == "x-extension")
-        #expect(links[0].parameters[2].value?.string == "opaque")
+        #expect(links[0].parameters[2].value?.rawValue == "opaque")
         #expect(links[0].parameters[3].value == nil)
     }
 
@@ -96,6 +90,6 @@ extension `RFC 8288 Link Parse Tests`.Unit {
     }
 
     private func parse(_ rawValue: String) throws -> [RFC_8288.Link] {
-        try RFC_8288.Link.Parse()(RFC_9110.Header.Field.Value(rawValue))
+        try RFC_8288.Link.Parse()(RFC_9110.Field.Value(rawValue))
     }
 }

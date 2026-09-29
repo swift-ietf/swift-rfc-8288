@@ -15,15 +15,6 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/swift-atoms/swift-byte.git", branch: "main"),
-        .package(url: "https://github.com/swift-atoms/swift-cursor.git", branch: "main"),
-        .package(
-            url: "https://github.com/swift-molecules/swift-byte.git",
-            branch: "main"
-        ),
-        .package(
-            url: "https://github.com/swift-molecules/swift-byte-parser.git",
-            branch: "main"
-        ),
         .package(url: "https://github.com/swift-ietf/swift-rfc-3986.git", branch: "main"),
         .package(url: "https://github.com/swift-ietf/swift-rfc-9110.git", branch: "main"),
     ],
@@ -33,24 +24,27 @@ let package = Package(
             dependencies: [
                 .product(name: "Byte", package: "swift-byte"),
                 .product(
-                    name: "Byte Standard Library Integration",
+                    name: "Byte",
                     package: "swift-byte"
                 ),
-                .product(name: "Byte Parser", package: "swift-byte-parser"),
                 .product(name: "RFC 3986", package: "swift-rfc-3986"),
                 .product(name: "RFC 9110", package: "swift-rfc-9110"),
             ]
         ),
         .testTarget(
             name: "RFC 8288 Tests",
-            dependencies: ["RFC 8288"]
+            dependencies: [
+                "RFC 8288",
+                .product(name: "RFC 3986", package: "swift-rfc-3986"),
+                .product(name: "RFC 9110", package: "swift-rfc-9110"),
+            ]
         ),
     ],
     swiftLanguageModes: [.v6]
 )
 
 for target in package.targets where ![.system, .binary, .plugin, .macro].contains(target.type) {
-    target.swiftSettings = [
+    let ecosystem: [SwiftSetting] = [
         .strictMemorySafety(),
         .enableUpcomingFeature("ExistentialAny"),
         .enableUpcomingFeature("InternalImportsByDefault"),
@@ -58,4 +52,8 @@ for target in package.targets where ![.system, .binary, .plugin, .macro].contain
         .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
         .enableExperimentalFeature("Lifetimes"),
     ]
+
+    let package: [SwiftSetting] = []
+
+    target.swiftSettings = (target.swiftSettings ?? []) + ecosystem + package
 }
