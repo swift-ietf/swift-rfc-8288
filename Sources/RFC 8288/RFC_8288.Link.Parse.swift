@@ -206,14 +206,14 @@ extension RFC_8288.Link.Parse {
     private func valid(_ relation: String) -> Bool {
         let bytes = [Byte](utf8: relation)
         guard let first = bytes.first?.bitPattern else { return false }
-        if first >= 0x61 && first <= 0x7A {
-            return bytes.dropFirst().allSatisfy {
+        let isLetter: (UInt8) -> Bool = { ($0 | 0x20) >= 0x61 && ($0 | 0x20) <= 0x7A }
+        if isLetter(first),
+            bytes.dropFirst().allSatisfy({
                 let byte = $0.bitPattern
-                return (byte >= 0x61 && byte <= 0x7A)
-                    || (byte >= 0x30 && byte <= 0x39)
-                    || byte == 0x2E
-                    || byte == 0x2D
-            }
+                return isLetter(byte) || (byte >= 0x30 && byte <= 0x39) || byte == 0x2E || byte == 0x2D
+            })
+        {
+            return true
         }
 
         let uri: RFC_3986.URI
