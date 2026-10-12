@@ -117,7 +117,7 @@ extension RFC_8288.Link.Parse {
             value = quoted
         } else {
             guard let bytes = token(&input) else { throw .invalidParameterValue }
-            value = Swift.Array(bytes)
+            value = Swift::Array(bytes)
         }
         return .init(
             name: name,
