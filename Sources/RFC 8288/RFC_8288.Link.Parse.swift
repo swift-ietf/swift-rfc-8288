@@ -1,5 +1,4 @@
 import Byte
-import Byte
 import RFC_3986
 public import RFC_9110
 
