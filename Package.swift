@@ -24,10 +24,6 @@ let package = Package(
             name: "RFC 8288",
             dependencies: [
                 .product(name: "Byte", package: "swift-byte"),
-                .product(
-                    name: "Byte",
-                    package: "swift-byte"
-                ),
                 .product(name: "RFC 3986", package: "swift-rfc-3986"),
                 .product(name: "RFC 9110", package: "swift-rfc-9110"),
             ]
